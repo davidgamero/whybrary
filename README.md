@@ -1,6 +1,6 @@
 #  🧠 WHYbrary - The Library of Whys
 
-[Live MVP DEMO](https://qastion.netlify.app)
+[Live MVP DEMO](https://whybrary.netlify.app)
 
 Searchable, accesible tribal knowledge at your fingertips
 
