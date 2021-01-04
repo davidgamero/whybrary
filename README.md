@@ -1,4 +1,4 @@
-#  🧠 Qastion
+#  🧠 WHYbrary - The Library of Whys
 
 [Live MVP DEMO](https://qastion.netlify.app)
 
@@ -8,7 +8,7 @@ Searchable, accesible tribal knowledge at your fingertips
 
 ## Functionality
 
-Qastion integrates via a Microsoft Teams Plugin that extracts Questions and Answers from your organization's messages.
+WHYbrary integrates via a Microsoft Teams Plugin that extracts Questions and Answers from your organization's messages.
 
 Information is indexed and added to an Natural Language Processing intellisense engine that can answer common questions before you even hit send
 
