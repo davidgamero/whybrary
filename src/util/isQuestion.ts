@@ -16,6 +16,10 @@ const questionWords: string[] = [
  * @param text 
  */
 const isQuestion: (text: string) => boolean = (text: string) => {
+  if (!text) {
+    return false;
+  }
+
   let lowerText: string = text.toLowerCase();
   let tokens: string[] = text.split(' ');
 

@@ -3,6 +3,9 @@ import MessageBubbleRow from '../MessageBubbleRow';
 import MessageInput from '../MessageInput';
 import { useState, useEffect } from 'react';
 import { firebase } from '@firebase/app';
+import isQuestion from '../../util/isQuestion';
+import getKeywords from '../../util/getKeywords';
+import suggestion from '../../types/suggestion';
 
 const MessengerFrame = styled.div`
 background-color: #302c30;
@@ -47,16 +50,45 @@ function Messenger({ messages, suggestions, isLoading, me }) {
   // Mutation runner since FirebaseDatabaseMutation was breaking state rerendering props
   // sourced from https://github.com/rakannimer/react-firebase/blob/master/modules/database/src/components/FirebaseDatabaseMutation.tsx
   // issue documented at https://github.com/rakannimer/react-firebase/issues/14
-  const pushMessage = (value) => {
-    const path = 'messages/general';
+  const pushMessage = (newMessage) => {
+    const channel = 'general';
+    const messagePath = `messages/${channel}`;
+    const suggestionPath = `suggestions/${channel}`;
 
-    const firebaseRef = firebase
+    const messageRef = firebase
       .app()
       .database()
-      .ref(path);
+      .ref(messagePath);
 
-    setSuggestedQA();
-    return firebaseRef.push(value);
+    const suggestionRef = firebase
+      .app()
+      .database()
+      .ref(suggestionPath);
+
+    let lastMessage = dbmessages[dbmessages.length - 1];
+    console.log(lastMessage);
+
+    console.log(`last message was question: ${lastMessage && isQuestion(lastMessage.text)}`);
+    console.log(`new message is question: ${newMessage && isQuestion(newMessage.text)}`);
+
+    // Generate suggestion if a non-question is sent after a question
+    if (lastMessage && isQuestion(lastMessage.text) && !isQuestion(newMessage.text)) {
+      let question = lastMessage;
+      let answer = newMessage;
+
+      let newSuggestion = {
+        keywords: getKeywords(lastMessage.text),
+        question: question.text,
+        response: answer.text,
+        responseAuthor: answer.author,
+        responseTimestamp: answer.created_on
+      };
+
+      suggestionRef.push(newSuggestion);
+    }
+
+    setSuggestedQA(); // Blank the suggested QA
+    return messageRef.push(newMessage);
   }
 
   const textChange = (newVal) => {
@@ -114,7 +146,7 @@ function Messenger({ messages, suggestions, isLoading, me }) {
 
       </MessageRowsFrame>
 
-      <InputContainer>
+      <InputContainer InputContainer >
         <MessageInput
           onChange={textChange}
           suggestedQA={suggestedQA}
