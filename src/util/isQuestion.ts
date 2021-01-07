@@ -9,6 +9,7 @@ const questionWords: string[] = [
   'which',
   'who',
   'whose',
+  'why'
 ];
 
 /**
@@ -24,12 +25,12 @@ const isQuestion: (text: string) => boolean = (text: string) => {
   let tokens: string[] = text.split(' ');
 
   let firstToken: string = tokens[0];
-  let lastToken: string = tokens[tokens.length - 1];
+  let lastChar: string = text[text.length - 1];
 
   let startsWithQuestionWord: boolean = questionWords.includes(firstToken);
 
   // Min length one to avoid `?` messages
-  let endsInQuestionMark: boolean = tokens.length > 1 && lastToken === '?';
+  let endsInQuestionMark: boolean = tokens.length > 1 && lastChar === '?';
 
   return startsWithQuestionWord || endsInQuestionMark;
 }

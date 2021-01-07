@@ -1,11 +1,11 @@
 import styled from 'styled-components';
 import MessageBubbleRow from '../MessageBubbleRow';
 import MessageInput from '../MessageInput';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { firebase } from '@firebase/app';
 import isQuestion from '../../util/isQuestion';
 import getKeywords from '../../util/getKeywords';
-import suggestion from '../../types/suggestion';
+import { useListVals } from 'react-firebase-hooks/database';
 
 const MessengerFrame = styled.div`
 background-color: #302c30;
@@ -36,25 +36,20 @@ justify-content: center;
 padding-bottom: 10vh;
 `
 
-function Messenger({ messages, suggestions, isLoading, me }) {
+function Messenger({ me }) {
+  const channel = 'general';
+
+  const messagePath = `messages/${channel}`;
+  const suggestionPath = `suggestions/${channel}`;
 
   const [suggestedQA, setSuggestedQA] = useState();
-  const [dbmessages, setDbmessages] = useState([]);
-
-  useEffect(() => {
-    if (!isLoading && messages) {
-      setDbmessages(Object.keys(messages).map((k) => messages[k]));
-    }
-  }, [messages, isLoading]);
+  const [dbmessages, dbmessagesLoading, dbmessagesError] = useListVals(firebase.database().ref(messagePath));
+  const [suggestions, suggestionsLoading, suggestionsError] = useListVals(firebase.database().ref(suggestionPath));
 
   // Mutation runner since FirebaseDatabaseMutation was breaking state rerendering props
   // sourced from https://github.com/rakannimer/react-firebase/blob/master/modules/database/src/components/FirebaseDatabaseMutation.tsx
   // issue documented at https://github.com/rakannimer/react-firebase/issues/14
   const pushMessage = (newMessage) => {
-    const channel = 'general';
-    const messagePath = `messages/${channel}`;
-    const suggestionPath = `suggestions/${channel}`;
-
     const messageRef = firebase
       .app()
       .database()
@@ -84,6 +79,8 @@ function Messenger({ messages, suggestions, isLoading, me }) {
         responseTimestamp: answer.created_on
       };
 
+      console.log('pushed new suggestion');
+      console.log(newSuggestion);
       suggestionRef.push(newSuggestion);
     }
 
@@ -132,18 +129,20 @@ function Messenger({ messages, suggestions, isLoading, me }) {
       <MessageRowsFrame>
         <MessageRowsContainer>
           {
-            dbmessages.map(
-              (message, i) => {
-                // Return a MessageBubbleRow for each object in the dbmessages array
-                return <MessageBubbleRow
-                  key={i}
-                  message={message}
-                  outgoing={message.author ? message.author === me : false} />
-              }
-            )
+            dbmessagesLoading ?
+              <p>Loading Messages...</p>
+              :
+              dbmessages.map(
+                (message, i) => {
+                  // Return a MessageBubbleRow for each object in the dbmessages array
+                  return <MessageBubbleRow
+                    key={i}
+                    message={message}
+                    outgoing={message.author ? message.author === me : false} />
+                }
+              )
           }
         </MessageRowsContainer>
-
       </MessageRowsFrame>
 
       <InputContainer InputContainer >

@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import axios from 'axios';
 import { firebase } from '@firebase/app';
 import 'firebase/database';
-import { FirebaseDatabaseProvider, FirebaseDatabaseNode } from '@react-firebase/database';
+import { FirebaseDatabaseProvider, FirebaseDatabaseNode, useList } from '@react-firebase/database';
 import firebaseConfig from './firebaseConfig';
 
 const text_analytics_key = 'e99f8216303f4eb18ca6b145b9e3d7e2';
@@ -87,30 +87,13 @@ function App() {
     <FirebaseDatabaseProvider
       firebase={firebase}
       {...firebaseConfig}>
-      <FirebaseDatabaseNode
-        path="messages/general"
-        limitToFirst={50}
-        // orderByKey
-        orderByValue={"created_on"}
-      >
-        {
-          ({ path, value, isLoading }) => {
-            return (
-              <Frame>
-                <Messenger
-                  messages={value}
-                  isLoading={isLoading}
-                  setMessages={setMessages}
-                  analyzeMessage={analyzeMessage}
-                  suggestions={suggestions}
-                  me={username} />
-              </Frame>
-            )
-          }
-        }
-      </FirebaseDatabaseNode>
-
-
+      <Frame>
+        <Messenger
+          setMessages={setMessages}
+          analyzeMessage={analyzeMessage}
+          suggestions={suggestions}
+          me={username} />
+      </Frame>
     </FirebaseDatabaseProvider>
   );
 }
