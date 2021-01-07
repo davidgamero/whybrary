@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import axios from 'axios';
 import { firebase } from '@firebase/app';
 import 'firebase/database';
-import { FirebaseDatabaseProvider, FirebaseDatabaseNode, useList } from '@react-firebase/database';
+import { FirebaseDatabaseProvider } from '@react-firebase/database';
 import firebaseConfig from './firebaseConfig';
 
 const text_analytics_key = 'e99f8216303f4eb18ca6b145b9e3d7e2';

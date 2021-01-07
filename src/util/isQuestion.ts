@@ -21,7 +21,6 @@ const isQuestion: (text: string) => boolean = (text: string) => {
     return false;
   }
 
-  let lowerText: string = text.toLowerCase();
   let tokens: string[] = text.split(' ');
 
   let firstToken: string = tokens[0];

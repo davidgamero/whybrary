@@ -43,8 +43,8 @@ function Messenger({ me }) {
   const suggestionPath = `suggestions/${channel}`;
 
   const [suggestedQA, setSuggestedQA] = useState();
-  const [dbmessages, dbmessagesLoading, dbmessagesError] = useListVals(firebase.database().ref(messagePath));
-  const [suggestions, suggestionsLoading, suggestionsError] = useListVals(firebase.database().ref(suggestionPath));
+  const [dbmessages, dbmessagesLoading,] = useListVals(firebase.database().ref(messagePath));
+  const [suggestions, ,] = useListVals(firebase.database().ref(suggestionPath));
 
   // Mutation runner since FirebaseDatabaseMutation was breaking state rerendering props
   // sourced from https://github.com/rakannimer/react-firebase/blob/master/modules/database/src/components/FirebaseDatabaseMutation.tsx
