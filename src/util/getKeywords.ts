@@ -1,5 +1,6 @@
 const getKeywords: (text: string) => string[] = (text) => {
-  let keywords: string[] = text.split(' ');
+  let keywords: string[] = text.replace('?','').split(' ');
+  console.log('muyang:', keywords)
 
   return keywords;
 }
