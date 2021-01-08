@@ -15,7 +15,8 @@ var re = new RegExp(Object.keys(excludeWords).join("|"),"gi");
 const getKeywords: (text: string) => string[] = (text) => {
   let keywords: string[] = text.replace('?','').replace(re, '').split(' ');
   for (let i = keywords.length - 1; i >= 0; i--) {
-    if (!keywords[i]) { 
+    // here I added the removal of 'is' after the split:
+    if (!keywords[i] || keywords[i].toLowerCase() === 'is') { 
         // remove the leading empty element after split
         keywords.splice(i, 1);
     }
