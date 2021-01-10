@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import MessageBubbleRow from '../MessageBubbleRow';
 import MessageInput from '../MessageInput';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { firebase } from '@firebase/app';
 import isQuestion from '../../util/isQuestion';
 import getKeywords from '../../util/getKeywords';
@@ -23,6 +23,7 @@ const MessageRowsFrame = styled.div`
 overflow-y: scroll;
 display: flex;
 flex-direction: column-reverse;
+height: 70vh;
 `
 
 // Extra wrapper to preserve order of messages instead of flipping them
@@ -124,6 +125,14 @@ function Messenger({ me }) {
     }
   }
 
+  const messagesEndRef = useRef(null)
+
+  const scrollToBottom = () => {
+    messagesEndRef.current.scrollIntoView({ behavior: "smooth" })
+  }
+
+  useEffect(scrollToBottom, [dbmessages]);
+
   return (
     <MessengerFrame>
       <MessageRowsFrame>
@@ -142,6 +151,7 @@ function Messenger({ me }) {
                 }
               )
           }
+          <div ref={messagesEndRef} />
         </MessageRowsContainer>
       </MessageRowsFrame>
 

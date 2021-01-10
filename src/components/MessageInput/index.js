@@ -91,7 +91,7 @@ function MessageInput({ onChange, suggestedQA, pushMessage, me }) {
     <InputForm onSubmit={handleSubmit}>
       {suggestedQA ? <SuggestionBox>
         <QuastionTitle>
-          {'Qastion Suggestion'}
+          {'Whybrary Suggestion'}
         </QuastionTitle>
         <SuggestionText>
           {`Similar to: "${suggestedQA.question}"`}
