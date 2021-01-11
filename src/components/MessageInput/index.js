@@ -105,7 +105,7 @@ function MessageInput({ onChange, suggestedQA, pushMessage, me }) {
       </SuggestionBox>
         : ''}
       <TextInput
-        placeholder="What's the new deadline?"
+        placeholder="Start a new conversation."
         onChange={handleChange}
         value={messageText} />
     </InputForm>
