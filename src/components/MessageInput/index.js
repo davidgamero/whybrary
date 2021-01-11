@@ -87,6 +87,12 @@ function MessageInput({ onChange, suggestedQA, pushMessage, me }) {
     })
   }
 
+  let date = suggestedQA && suggestedQA.responseTimestamp && new Date(suggestedQA.responseTimestamp);
+
+  // Create formatted text to show the timestamp for a message
+  let timestamp = 'no date' && date && `${date.getMonth() + 1}/${date.getDate()} ${date.getHours()}:${date.getMinutes()}`;
+
+
   return (
     <InputForm onSubmit={handleSubmit}>
       {suggestedQA ? <SuggestionBox>
@@ -97,7 +103,7 @@ function MessageInput({ onChange, suggestedQA, pushMessage, me }) {
           {`Similar to: "${suggestedQA.question}"`}
         </SuggestionText>
         <QuastionTitle>
-          {`>  ${suggestedQA.responseAuthor} @ ${suggestedQA.responseTimestamp}`}
+          {`>  ${suggestedQA.responseAuthor} @ ${timestamp}`}
         </QuastionTitle>
         <SuggestionText>
           {`> ${suggestedQA.response}`}
