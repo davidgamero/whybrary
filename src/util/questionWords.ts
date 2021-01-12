@@ -9,12 +9,12 @@ let questionWordsArray: string[] = [
     `who`,
     `whose`,
     `why`
-]
+];
 
 let questionWords = new Set();
 
 questionWordsArray.forEach((word) => {
     questionWords.add(word);
-})
+});
 
 export default questionWords;

@@ -1,26 +1,15 @@
-let excludeWords = {
-  are: '',
-  do: '',
-  how: '',
-  what: '',
-  when: '',
-  where: '',
-  which: '',
-  who: '',
-  whose: '',
-  why: ''
-}
-// regular expression + replace for question mark removal. Noticed that I did not include 'is', as it will remove words like 'list' or any meaningful words.
-var re = new RegExp(Object.keys(excludeWords).join("|"),"gi");
+import stopwords from './stopWords'
+
 const getKeywords: (text: string) => string[] = (text) => {
-  let keywords: string[] = text.replace('?','').replace(re, '').split(' ');
-  for (let i = keywords.length - 1; i >= 0; i--) {
-    // here I added the removal of 'is' after the split:
-    if (!keywords[i] || keywords[i].toLowerCase() === 'is') { 
-        // remove the leading empty element after split
-        keywords.splice(i, 1);
-    }
-}
+  // TODO use a tokenizer instead of `split(' ')`
+
+  // Regular expresseion for removing question mark, then split on spaces to tokenize
+  let tokens: string[] = text.replace('?', '').split(' ');
+
+  // Filter for words that do not appear in the stopWords Set
+  let keywords: string[] = tokens.filter((token) =>
+    !stopwords.has(token)
+  )
 
   return keywords;
 }

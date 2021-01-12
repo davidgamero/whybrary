@@ -181,6 +181,6 @@ let stopWords = new Set();
 
 stopWordsArray.forEach((word) => {
     stopWords.add(word);
-})
+});
 
 export default stopWords;
